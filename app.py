@@ -20,7 +20,7 @@ app.add_middleware(
 
 # Load Models
 try:
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    base_dir = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(base_dir, "models/random_forest_model.pkl"), "rb") as f:
         rf_model = pickle.load(f)
     
