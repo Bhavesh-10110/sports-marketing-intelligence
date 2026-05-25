@@ -41,19 +41,13 @@ except Exception as e:
 
 class CustomerData(BaseModel):
     age: int
-    gender: str
     city: str
     occupation: str
     monthly_income: float
     favorite_ipl_team: str
     matches_watched_per_season: int
-    fantasy_cricket_user: str
-    preferred_social_media_platform: str
     sports_content_watch_hours_per_week: float
-    preferred_content_format: str
-    social_media_activity_during_matches: str
     sports_equipment_spending_per_month: float
-    preferred_shopping_platform: str
 
 @app.get("/")
 def read_root():
@@ -65,12 +59,7 @@ def predict_behavior(customer: CustomerData):
         data = customer.dict()
         
         # Categorical columns that were encoded
-        cat_cols = [
-            'gender', 'city', 'occupation', 'favorite_ipl_team',
-            'fantasy_cricket_user', 'preferred_social_media_platform',
-            'preferred_content_format', 'social_media_activity_during_matches',
-            'preferred_shopping_platform'
-        ]
+        cat_cols = ['city', 'occupation', 'favorite_ipl_team']
         
         # Encode categorical variables directly in the dictionary first
         for col in cat_cols:
@@ -85,18 +74,24 @@ def predict_behavior(customer: CustomerData):
         # Convert to DataFrame AFTER updating the types to integers
         df = pd.DataFrame([data])
 
-        # Feature order must match training data
+        # Feature order must match the required 8 features
         feature_order = [
-            "age", "gender", "city", "occupation", "monthly_income",
-            "favorite_ipl_team", "matches_watched_per_season", "fantasy_cricket_user",
-            "preferred_social_media_platform", "sports_content_watch_hours_per_week",
-            "preferred_content_format", "social_media_activity_during_matches", 
-            "sports_equipment_spending_per_month", "preferred_shopping_platform"
+            "age", "city", "occupation", "monthly_income",
+            "favorite_ipl_team", "matches_watched_per_season", 
+            "sports_content_watch_hours_per_week",
+            "sports_equipment_spending_per_month"
         ]
         df = df[feature_order]
 
-        # Scale features
-        scaled_data = scaler.transform(df)
+        # The scaler was trained on 14 features, but we only have 8 now.
+        # We manually scale the 8 features using the scaler's specific means and scales.
+        original_features = scaler.feature_names_in_
+        indices = [list(original_features).index(f) for f in feature_order]
+        
+        means = scaler.mean_[indices]
+        scales = scaler.scale_[indices]
+        
+        scaled_data = (df.values - means) / scales
         df_scaled = pd.DataFrame(scaled_data, columns=feature_order)
 
         # Predict K-Means Cluster first (so we can use it for RF if needed)
