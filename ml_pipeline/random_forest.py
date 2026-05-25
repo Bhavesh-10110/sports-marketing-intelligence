@@ -16,7 +16,13 @@ df=pd.read_csv(r"data/processed/clustered_dataset.csv")
 
 X = df.drop(columns=[
     'likely_to_buy_cricket_kit',
-    'cluster_label'
+    'cluster_label',
+    "gender",
+    "fantasy_cricket_user",
+    "preferred_social_media_platform",
+    "preferred_content_format",
+    "social_media_activity_during_matches",
+    "preferred_shopping_platform"
 ],errors='ignore')
 
 y = df['likely_to_buy_cricket_kit']
@@ -65,3 +71,4 @@ pickle.dump(
 # =====================================================
 
 print("\nRandom Forest model trained successfully!")
+
