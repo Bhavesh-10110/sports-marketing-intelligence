@@ -35,7 +35,7 @@ const getInitialErrors = () => ({
 const numericFieldValidators = {
   age: { min: 10, max: 60, integer: true, message: 'Age must be an integer between 10 and 60.' },
   monthly_income: { min: 1, integer: false, message: 'Monthly income must be a positive number.' },
-  matches_watched_per_season: { min: 0, max: 74 ,integer: true, message: 'Matches watched must be a non-negative integer.' },
+  matches_watched_per_season: { min: 0, max: 74, integer: true, message: 'Matches watched must be a non-negative integer.' },
   sports_content_watch_hours_per_week: {
     min: 0,
     max: 60,
@@ -141,6 +141,7 @@ const InputFeatures = () => {
 
   return (
     <section className="input-features-shell">
+
       <form className="input-features-card" onSubmit={handleSubmit} noValidate>
         <div className="input-features-header">
           <h2 className='font-extrabold tracking-wider text-5xl'>Cricket Kit Audience Form</h2>

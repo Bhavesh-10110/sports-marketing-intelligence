@@ -63,7 +63,7 @@ const Result = () => {
                 )}
 
                 <div className="result-actions">
-                    <Link className="result-button result-button-secondary" to="/">
+                    <Link className="result-button result-button-secondary" to="/Home">
                         Back to form
                     </Link>
                 </div>
